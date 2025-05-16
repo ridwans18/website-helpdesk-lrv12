@@ -1,0 +1,239 @@
+body {
+    margin-top: 56px;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.bg-login {
+    background-image: url('../img/vecteezy_warehouse_workers_check_quantity.jpg');
+    background-size: cover;
+}
+
+.shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.300) !important;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #fff;
+    height: auto;
+    padding: 0.5rem;
+    box-shadow: 0 0px 9px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-brand {
+    font-weight: 500;
+    color: #009970;
+    font-size: 24px;
+    transition: 0.3s color;
+}
+
+.navbar-toggler {
+    border: none;
+    font-size: 1.25rem;
+}
+
+.navbar-toggler:focus, .btn-close:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.nav-link {
+    color: #666777;
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-link::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: #009970;
+    visibility: hidden;
+    transition: 0.2s ease-in-out;
+}
+
+.nav-link:hover::before, .nav-link.active::before {
+    width: 100%;
+    visibility: visible;
+}
+
+/* End Navbar */
+
+/* Login Button */
+.login-button {
+    background-color: #009970;
+    color: #fff;
+    font-size: 12px;
+    padding: 8px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    position: relative;
+    bottom: 2px;
+    transition: 0.3s background-color;
+}
+
+.login-button:hover {
+    background-color: #007758;
+}
+/* End Login Button */
+
+/* Footer */
+.footer-area {
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: auto;
+    min-height: 40px;
+    position: relative;
+    margin-top: 20px;
+}
+
+.container.flex-grow-1 {
+    flex-grow: 1;
+}
+/* End Footer */
+
+
+/* Menghindari konflik dengan selektor yang lebih spesifik */
+body {
+    margin-top: 56px;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.bg-login {
+    background-image: url('../img/vecteezy_warehouse_workers_check_quantity.jpg');
+    background-size: cover;
+}
+
+/* Penambahan namespace untuk menghindari konflik */
+.custom-shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.300) !important;
+}
+
+/* Navbar */
+.custom-navbar {
+    background-color: #fff;
+    height: auto;
+    padding: 0.5rem;
+    box-shadow: 0 0px 9px rgba(0, 0, 0, 0.2);
+}
+
+.custom-navbar-brand {
+    font-weight: 500;
+    color: #009970;
+    font-size: 24px;
+    transition: 0.3s color;
+}
+
+.custom-navbar-toggler {
+    border: none;
+    font-size: 1.25rem;
+}
+
+.custom-navbar-toggler:focus, .btn-close:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.custom-nav-link {
+    color: #666777;
+    font-weight: 500;
+    position: relative;
+}
+
+.custom-nav-link::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: #009970;
+    visibility: hidden;
+    transition: 0.2s ease-in-out;
+}
+
+.custom-nav-link:hover::before, .custom-nav-link.active::before {
+    width: 100%;
+    visibility: visible;
+}
+/* End Navbar */
+
+/* Login Button */
+.custom-login-button {
+    background-color: #009970;
+    color: #fff;
+    font-size: 12px;
+    padding: 8px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    position: relative;
+    bottom: 2px;
+    transition: 0.3s background-color;
+}
+
+.custom-login-button:hover {
+    background-color: #007758;
+}
+/* End Login Button */
+
+/* Footer */
+.custom-footer-area {
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: auto;
+    min-height: 40px;
+    position: relative;
+    margin-top: 20px;
+}
+
+.container.flex-grow-1 {
+    flex-grow: 1;
+}
+/* End Footer */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+#detailModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #000;
+    padding: 20px;
+    z-index: 10;
+    display: none;
+}
