@@ -1,20 +1,30 @@
+@props([
+    'href' => '#', 
+    'namanavbar' => 'Beranda', 
+    'linkClass' => 'text-gray-300 bg-gray-700 hover:text-white'
+    ])
+
+@props(['links' => []])
+
 <nav class="bg-gray-800" x-data="{ isOpen: false }">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
         <div class="flex items-center">
             <div class="shrink-0">
-            <img class="size-8" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
+                <img class="size-8" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
             </div>
             <div class="hidden md:block">
-            <div class="ml-10 flex items-baseline space-x-4">
-                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Home</a>
-                <a href="beranda" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Beranda</a>
-                <a href="daftarkeluhan" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Daftar Keluhan</a>
-                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Laporan</a>
-            </div>
+                <div class="ml-10 flex items-baseline space-x-4">
+                    @foreach ($links as $link)
+                        <a href="{{ $link['href'] }}"
+                           class="rounded-md px-3 py-2 text-sm font-medium {{ $link['class'] ?? 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
+                           {{ $link['text'] }}
+                        </a>
+                    @endforeach
+                </div>
             </div>
         </div>
+
         <div class="hidden md:block">
             <div class="ml-4 flex items-center md:ml-6">
             <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">

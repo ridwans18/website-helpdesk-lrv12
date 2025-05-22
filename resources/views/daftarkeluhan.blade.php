@@ -10,10 +10,15 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-</head>
+    </head>
     <body class="flex flex-col min-h-screen d-flex flex-column min-vh-100">
         <div class="min-h-full">
-            <x-navbar></x-navbar>
+            <x-navbar :links="[
+                ['href' => '/', 'text' => 'Home'],
+                ['href' => 'beranda', 'text' => 'Beranda'],
+                ['href' => 'daftarkeluhan', 'text' => 'Daftar Keluhan', 'class' => 'text-white bg-gray-900'],
+                ['href' => '#', 'text' => 'Laporan'],
+            ]" />
         </div>
 
         <!-- Start Content -->
@@ -30,7 +35,7 @@
                             <th class="px-4 py-3">Jabatan</th>
                             <th class="px-4 py-3">Kategori</th>
                             <th class="px-4 py-3">Teknisi</th>
-                            <th class="px-4 py-3">Satuan Kerja</th>
+                            <th class="px-4 py-3">{Satuan Kerja}</th>
                             <th class="px-4 py-3">Lantai</th>
                             <th class="px-4 py-3">Tanggal Lapor</th>
                             <th class="px-4 py-3">Aksi</th>

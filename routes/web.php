@@ -4,6 +4,21 @@ use App\Http\Controllers\Admin\berandaController;
 use App\Http\Controllers\Admin\TambahTeknisiController;
 use App\Http\Controllers\DaftarKeluhanController;
 use Illuminate\Support\Facades\Route;
+// use App\Http\Controllers\LoginController;
+
+// Route::get('/login', [LoginController::class, 'showForm'])->name('login');
+// Route::post('/login', [LoginController::class, 'login'])->name('login.proses');
+// Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// // Tambahkan proteksi halaman beranda
+// Route::get('/beranda', function () {
+//     if (!session()->has('user')) {
+//         return redirect('/login');
+//     }
+
+//     // Kirim variabel user ke view
+//     return view('beranda', ['user' => session('user')]);
+// });
 
 Route::get('/', function () {
     return view('welcome');
