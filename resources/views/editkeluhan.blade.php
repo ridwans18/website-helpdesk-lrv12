@@ -86,16 +86,23 @@
                         </div>
                         <div>
                             <label for="teknisi" class="block font-medium">Teknisi*</label>
-                            <div class="grid grid-cols-4 gap-2">
+                            <div class="flex flex-row items-center justify-between gap-2">
                                 <select id="teknisi" class="col-span-3 w-full border border-gray-300 rounded px-3 py-2">
-                                    <option>Andi</option>
-                                    <option>Sela</option>
-                                    <option>Tono</option>
+                                    <option>{{ $datakel->teknisi }}</option>
+                                    @forelse($daftek as $item)
+                                        <option>{{ $item->nama_teknisi }}</option>
+                                        @empty
+                                        <p>Tidak ada teknisi.</p>
+                                    @endforelse
                                 </select>
+                                {{-- Button Edit Teknisi --}}
                                 <div class="flex gap-2">
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#ubahModal" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-1 rounded text-xs">
-                                        Ubah
-                                    </button>
+                                    <x-heroicon-c-pencil-square 
+                                        type="button" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#ubahModal" 
+                                        class="w-6"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -175,7 +182,7 @@
 
                                 <!-- Checklist teknisi yang ada -->
                                 <h6>Teknisi yang Ada</h6>
-                                {{--@forelse($daftek as $item)
+                                @forelse($daftek as $item)
                                     <div class="form-check">
                                         <input 
                                             class="form-check-input" 
@@ -190,7 +197,7 @@
                                     </div>
                                 @empty
                                     <p>Tidak ada teknisi.</p>
-                                @endforelse--}}
+                                @endforelse
                             </div>
 
                             <div class="modal-footer">

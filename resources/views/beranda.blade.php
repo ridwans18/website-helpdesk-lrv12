@@ -16,7 +16,7 @@
                 ['href' => '/', 'text' => 'Home'],
                 ['href' => 'beranda', 'text' => 'Beranda', 'class' => 'text-white bg-gray-900'],
                 ['href' => 'daftarkeluhan', 'text' => 'Daftar Keluhan'],
-                ['href' => '#', 'text' => 'Laporan'],
+                ['href' => 'laporan', 'text' => 'Laporan'],
             ]" 
             />
         </div>
@@ -40,13 +40,13 @@
                         placeholder="Keluhan">
                     </div>
                     <!-- Grid Content -->
-                    <x-beranda.datapelapor propsTeknisi="#ubahTeknisi" />
+                    <x-beranda-layout.datapelapor :daftek="$daftek" propsTeknisi="#ubahTeknisi" />
                 
-                    <x-beranda.jadwalpelapor></x-jadwalpelapor>
+                    <x-beranda-layout.jadwalpelapor></x-jadwalpelapor>
 
-                    <x-beranda.lokasikeluhan></x-lokasikeluhan>
+                    <x-beranda-layout.lokasikeluhan></x-lokasikeluhan>
 
-                    <x-beranda.rinciantambahan></x-rinciantambahan>
+                    <x-beranda-layout.rinciantambahan></x-rinciantambahan>
 
                     <!-- Buttons -->
                     <div class="text-end">
@@ -57,52 +57,6 @@
             </div>
 
             <!-- Modal -->
-            <div class="modal fade" id="ubahTeknisi" tabindex="-1" aria-labelledby="ubahTeknisiLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="ubahTeknisiLabel">Tambah/Hapus Nama Teknisi</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form action="{{ route('admin.TambahTeknisi.store') }}" method="POST">
-                            @csrf
-                            <div class="modal-body">
-                                <!-- Tambah teknisi baru -->
-                                <div class="mb-3">
-                                    <h6>Tambah Teknisi</h6>
-                                    <input type="text" class="form-control" name="nama_teknisi" placeholder="Masukkan nama teknisi" required>
-                                </div>
-
-                                <!-- Checklist teknisi yang ada -->
-                                <h6>Teknisi yang Ada</h6>
-                                @forelse($daftek as $item)
-                                    <div class="form-check">
-                                        <input 
-                                            class="form-check-input" 
-                                            type="checkbox" 
-                                            id="teknisi{{ $item->id }}" 
-                                            name="teknisi_id[]" 
-                                            value="{{ $item->id }}"
-                                        >
-                                        <label class="form-check-label" for="teknisi{{ $item->id }}">
-                                            {{ $item->nama_teknisi }}
-                                        </label>
-                                    </div>
-                                @empty
-                                    <p>Tidak ada teknisi.</p>
-                                @endforelse
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="submit" name="action" value="simpan" class="btn btn-primary">Simpan Perubahan</button>
-                                <button type="submit" name="action" value="hapus" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus teknisi yang dipilih?')">Hapus</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            
-             <!-- Modal -->
             <div class="modal fade" id="ubahTeknisi" tabindex="-1" aria-labelledby="ubahTeknisiLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">

@@ -23,6 +23,7 @@ class DaftarKeluhanController extends Controller
             'satuankerja',
             'lantai',
             'rincian',
+            'status',
         ]);
 
         // Start a query builder
@@ -63,6 +64,10 @@ class DaftarKeluhanController extends Controller
 
         if (!empty($filters['created_at'])) {
             $query->where('created_at', 'like', '%' . $filters['created_at'] . '%');
+        }
+
+        if (!empty($filters['status'])) {
+            $query->where('status', 'like', '%' . $filters['status'] . '%');
         }
 
         // Paginate the filtered results

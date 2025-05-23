@@ -89,7 +89,9 @@ class berandaController extends Controller
    public function edit($id)
    {
        $datakel = createKeluhan::findOrFail($id);
-       return view('editkeluhan', compact('datakel')); 
+       $daftek = CreateTeknisi::all();
+
+       return view('editkeluhan', compact('datakel', 'daftek')); 
    }
 
    
@@ -102,6 +104,9 @@ class berandaController extends Controller
             'nama_pelapor' => 'required',
             'jabatan' => 'required',
             'kategori' => 'required',
+            'teknisi' => 'required',
+            'satuankerja' => 'required',
+            'lantai' => 'required',
        ]);
 
        $datakel = createKeluhan::findOrFail($id);
@@ -111,12 +116,16 @@ class berandaController extends Controller
            ->with('success', 'Laporan berhasil diperbarui.');
    }
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+   public function ubahStatus(Request $request, $id)
     {
-        //
+        $request->validate([
+            'status' => 'required|in:1,2,3',
+        ]);
+
+        $keluhan = createKeluhan::findOrFail($id);
+        $keluhan->status = $request->status;
+        $keluhan->save();
+
+        return response()->json(['message' => 'Status berhasil diubah.']);
     }
 }

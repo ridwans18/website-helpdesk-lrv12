@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\berandaController;
 use App\Http\Controllers\Admin\TambahTeknisiController;
 use App\Http\Controllers\DaftarKeluhanController;
+use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\LoginController;
 
@@ -69,14 +70,23 @@ Route::post('/admin/TambahTeknisi', [TambahTeknisiController::class, 'store'])->
 
 
 // Menampilkan daftar keluhan
-Route::get('/daftarkeluhan', [DaftarKeluhanController::class, 'index'])->name('admin.daftarKeluhan');
+Route::get('/daftarkeluhan', action: [DaftarKeluhanController::class, 'index'])->name('admin.daftarKeluhan');
 
 
 // Menghapus keluhan berdasarkan ID
 Route::delete('/daftarkeluhan/{id}', [DaftarKeluhanController::class, 'destroy'])->name('admin.daftarKeluhan.destroy');
 
 
+Route::post('/ubah-status/{id}', [berandaController::class, 'ubahStatus'])->name('admin.ubahStatus');
+
+
 Route::post('/admin/tambah-teknisi', [TambahTeknisiController::class, 'store'])->name('admin.TambahTeknisi.store');
 
 
+Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
 
+
+Route::get('/laporan/tampilkan', [LaporanController::class, 'tampilkan'])->name('laporan.tampilkan');
+
+
+Route::post('/laporan/cetak', [LaporanController::class, 'cetak'])->name('laporan.cetak');
