@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\berandaController;
-use App\Http\Controllers\Admin\TambahTeknisiController;
+use App\Http\Controllers\berandaController;
+use App\Http\Controllers\TambahTeknisiController;
 use App\Http\Controllers\DaftarKeluhanController;
 use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Route;
@@ -31,25 +31,20 @@ Route::get('beranda', function () {
 });
 
 
-Route::get('/beranda', [berandaController::class, 'index'])->name('admin.beranda');
+Route::get('/beranda', [berandaController::class, 'index'])->name('beranda');
 
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('beranda', berandaController::class)->only(['create', 'store']);
-});
+Route::resource('beranda', BerandaController::class)->only(['create', 'store']);
 
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('daftarkeluhan', berandaController::class);
-});
-
+Route::resource('daftarkeluhan', BerandaController::class);
 
 /*Route::get('/admin/daftarkeluhan/{id}/edit', [berandaController::class, 'edit'])
      ->name('admin.daftarkeluhan.edit');*/
 
 
 // button batal pada halaman editkeluhan
-Route::get('/editkeluhan', [DaftarKeluhanController::class, 'index'])->name('admin.daftarKeluhan');
+Route::get('/editkeluhan', [DaftarKeluhanController::class, 'index'])->name('daftarKeluhan');
 
 
 Route::get('/keluhan/{id}/edit', [berandaController::class, 'edit'])->name('keluhan.edit');
@@ -58,10 +53,10 @@ Route::get('/keluhan/{id}/edit', [berandaController::class, 'edit'])->name('kelu
 Route::put('/keluhan/{id}', [berandaController::class, 'update'])->name('keluhan.update');
 
 
-Route::get('/admin/TambahTeknisi', [TambahTeknisiController::class, 'create'])->name('admin.TambahTeknisi.create');
+Route::get('/TambahTeknisi', [TambahTeknisiController::class, 'create'])->name('TambahTeknisi.create');
 
 
-Route::post('/admin/TambahTeknisi', [TambahTeknisiController::class, 'store'])->name('admin.TambahTeknisi.store');
+Route::post('/TambahTeknisi', [TambahTeknisiController::class, 'store'])->name('TambahTeknisi.store');
 
 
 /*Route::get('daftarkeluhan', function () {
@@ -70,17 +65,17 @@ Route::post('/admin/TambahTeknisi', [TambahTeknisiController::class, 'store'])->
 
 
 // Menampilkan daftar keluhan
-Route::get('/daftarkeluhan', action: [DaftarKeluhanController::class, 'index'])->name('admin.daftarKeluhan');
+Route::get('/daftarkeluhan', action: [DaftarKeluhanController::class, 'index'])->name('daftarKeluhan');
 
 
 // Menghapus keluhan berdasarkan ID
-Route::delete('/daftarkeluhan/{id}', [DaftarKeluhanController::class, 'destroy'])->name('admin.daftarKeluhan.destroy');
+Route::delete('/daftar-keluhan/{id}', [DaftarKeluhanController::class, 'destroy'])->name('daftarKeluhan.destroy');
 
 
-Route::post('/ubah-status/{id}', [berandaController::class, 'ubahStatus'])->name('admin.ubahStatus');
+Route::post('/ubah-status/{id}', [berandaController::class, 'ubahStatus'])->name('ubahStatus');
 
 
-Route::post('/admin/tambah-teknisi', [TambahTeknisiController::class, 'store'])->name('admin.TambahTeknisi.store');
+Route::post('/tambah-teknisi', [TambahTeknisiController::class, 'store'])->name('TambahTeknisi.store');
 
 
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');

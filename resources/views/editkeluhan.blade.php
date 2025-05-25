@@ -87,13 +87,16 @@
                         <div>
                             <label for="teknisi" class="block font-medium">Teknisi*</label>
                             <div class="flex flex-row items-center justify-between gap-2">
-                                <select id="teknisi" class="col-span-3 w-full border border-gray-300 rounded px-3 py-2">
-                                    <option>{{ $datakel->teknisi }}</option>
-                                    @forelse($daftek as $item)
-                                        <option>{{ $item->nama_teknisi }}</option>
-                                        @empty
-                                        <p>Tidak ada teknisi.</p>
-                                    @endforelse
+                                <select 
+                                    id="teknisi" 
+                                    name="teknisi"
+                                    class="col-span-3 w-full border border-gray-300 rounded px-3 py-2">
+                                        <option>{{ $datakel->teknisi }}</option>
+                                        @forelse($daftek as $item)
+                                            <option>{{ $item->nama_teknisi }}</option>
+                                            @empty
+                                            <p>Tidak ada teknisi.</p>
+                                        @endforelse
                                 </select>
                                 {{-- Button Edit Teknisi --}}
                                 <div class="flex gap-2">
@@ -131,20 +134,26 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                         <div>
                             <label for="region" class="block font-medium">Satuan Kerja*</label>
-                            <select id="region" class="w-full border border-gray-300 rounded px-3 py-2">
-                                <option>Tata Keloka TIK</option>
-                                <option>Tata Usaha</option>
-                                <option>Pengembangan</option>
-                                <option>Operasional</option>
+                            <select 
+                                id="region" 
+                                name="satuankerja"
+                                class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option>Tata Keloka TIK</option>
+                                    <option>Tata Usaha</option>
+                                    <option>Pengembangan</option>
+                                    <option>Operasional</option>
                             </select>
                         </div>
                         <div>
                             <label for="state" class="block font-medium">Lantai</label>
-                            <select id="state" class="w-full border border-gray-300 rounded px-3 py-2">
-                                <option>Lt.1</option>
-                                <option>Lt.2</option>
-                                <option>Lt.3</option>
-                                <option>Lt.4</option>
+                            <select 
+                                id="state" 
+                                name="lantai" 
+                                class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option>Lt.1</option>
+                                    <option>Lt.2</option>
+                                    <option>Lt.3</option>
+                                    <option>Lt.4</option>
                             </select>
                         </div>
                     </div>
@@ -158,7 +167,7 @@
                     <!-- Buttons -->
                     <div class="text-end">
                         <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mr-2" type="submit">Simpan</button>
-                        <a href="{{ route('admin.daftarKeluhan') }}" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Batal</a>
+                        <a href="{{ route('daftarKeluhan') }}" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Batal</a>
                     </div>
                 </form>
             </div>
@@ -171,7 +180,7 @@
                             <h5 class="modal-title" id="ubahModalLabel">Tambah/Hapus Nama Teknisi</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form action="{{ route('admin.TambahTeknisi.store') }}" method="POST">
+                        <form action="{{ route('TambahTeknisi.store') }}" method="POST">
                             @csrf
                             <div class="modal-body">
                                 <!-- Tambah teknisi baru -->
@@ -224,13 +233,6 @@
             </div>
         </footer>
 
-        <!-- Script for toggle mobile menu -->
-        <script>
-            document.getElementById('menu-toggle').addEventListener('click', function () {
-                const menu = document.getElementById('mobile-menu');
-                menu.classList.toggle('hidden');
-            });
-        </script> 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

@@ -20,5 +20,6 @@ class createKeluhan extends Model
         'satuankerja',
         'lantai',
         'rincian',
+        'status',
     ];
 }

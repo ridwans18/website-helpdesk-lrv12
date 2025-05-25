@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\createKeluhan;
@@ -51,7 +51,7 @@ class berandaController extends Controller
      */
     public function create()
     {
-        return view('admin.beranda.create');
+        return view('beranda.create');
     }
 
     public function store(Request $request)
@@ -66,9 +66,10 @@ class berandaController extends Controller
             'teknisi' => 'required',
             'satuankerja' => 'required',
             'lantai' => 'required',
+            // tidak perlu validasi 'status' karena akan kita set manual
         ]);
 
-        createkeluhan::create($request->only([
+        $data = $request->only([
             'keluhan',
             'nip',
             'nik',
@@ -78,7 +79,11 @@ class berandaController extends Controller
             'teknisi',
             'satuankerja',
             'lantai',
-        ]));
+        ]);
+
+        $data['status'] = 1; // atur status default menjadi 1
+
+        createkeluhan::create($data);
 
         return redirect()->back()->with('success', 'Keluhan berhasil disimpan!');
     }
@@ -95,11 +100,11 @@ class berandaController extends Controller
    }
 
    
-   public function update(Request $request, string $id)
-   {
-       $request->validate([
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
             'keluhan' => 'required',
-            'nip' => 'required',
+            'nip' => 'required|numeric',
             'nik' => 'required',
             'nama_pelapor' => 'required',
             'jabatan' => 'required',
@@ -107,14 +112,15 @@ class berandaController extends Controller
             'teknisi' => 'required',
             'satuankerja' => 'required',
             'lantai' => 'required',
-       ]);
+        ]);
 
-       $datakel = createKeluhan::findOrFail($id);
-       $datakel->update($request->all());
+        $data = createKeluhan::findOrFail($id);
 
-       return redirect()->route('admin.daftarKeluhan')
-           ->with('success', 'Laporan berhasil diperbarui.');
-   }
+        $data->update($request->all());
+
+        return redirect()->route('daftarKeluhan')
+            ->with('success', 'Laporan berhasil diperbarui');
+    }
 
    public function ubahStatus(Request $request, $id)
     {

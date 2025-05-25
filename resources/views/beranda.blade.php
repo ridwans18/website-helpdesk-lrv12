@@ -27,7 +27,7 @@
                 <h2 class="text-2xl font-semibold mb-6">Buat Laporan</h2>
 
                 <!-- Report Information -->
-                <form action="{{ route('admin.beranda.store') }}" method="POST">
+                <form action="{{ route('beranda.store') }}" method="POST">
                     @csrf
                     <!-- Quick Report -->
                     <div class="mb-4">
@@ -64,7 +64,7 @@
                             <h5 class="modal-title" id="ubahTeknisiLabel">Tambah/Hapus Nama Teknisi</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form action="{{ route('admin.TambahTeknisi.store') }}" method="POST">
+                        <form action="{{ route('TambahTeknisi.store') }}" method="POST">
                             @csrf
                             <div class="modal-body">
                                 <!-- Tambah teknisi baru -->

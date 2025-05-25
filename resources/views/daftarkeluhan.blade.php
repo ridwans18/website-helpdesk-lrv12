@@ -17,7 +17,7 @@
             <x-navbar :links="[
                 ['href' => '/', 'text' => 'Home'],
                 ['href' => 'beranda', 'text' => 'Beranda'],
-                ['href' => route('admin.daftarKeluhan'), 'class' => 'text-white bg-gray-900', 'text' => 'Daftar Keluhan'],
+                ['href' => route('daftarKeluhan'), 'class' => 'text-white bg-gray-900', 'text' => 'Daftar Keluhan'],
                 ['href' => 'laporan', 'text' => 'Laporan'],
             ]" />
         </div>
@@ -106,10 +106,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a type="submit" href="{{ route('admin.daftarkeluhan.edit', $item->id) }}" class="mb-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-3 rounded text-xs">
+                                <a type="submit" href="{{ route('daftarkeluhan.edit', $item->id) }}" class="mb-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-3 rounded text-xs">
                                     Ubah Data
                                 </a>
-                                <form action="{{ route('admin.daftarKeluhan.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?')" class="inline">
+                                <form action="{{ route('daftarKeluhan.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?')" class="inline">
                                     @csrf
                                     @method('DELETE')
                                      <button type="submit" class="mb-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded text-xs">

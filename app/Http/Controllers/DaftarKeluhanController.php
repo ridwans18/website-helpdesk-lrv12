@@ -85,7 +85,7 @@ class DaftarKeluhanController extends Controller
         $dafkel = createKeluhan::findOrFail($id);
         $dafkel->delete();
  
-        return redirect()->route('admin.daftarKeluhan')
+        return redirect()->route('daftarKeluhan')
             ->with('success', 'Keluhan berhasil dihapus.');
     }
 }
