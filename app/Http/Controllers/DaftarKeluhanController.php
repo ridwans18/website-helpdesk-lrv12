@@ -3,81 +3,74 @@
 namespace App\Http\Controllers;
 
 use App\Models\createKeluhan;
+use App\Models\CreateTeknisi;
+use App\Models\Jabatan;
+use App\Models\Kategori;
+use App\Models\SatuanKerja;
+use App\Models\Lantai;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DaftarKeluhanController extends Controller
 {
-    public function index(Request $request)
+    public function edit($id)
     {
-        // Retrieve filter inputs from the request
-        $filters = $request->only([
-            'keluhan',
-            'nip',
-            'nik',
-            'nama_pelapor',
-            'jabatan',
-            'kategori',
-            'teknisi',
-            'notadinas',
-            'satuankerja',
-            'lantai',
-            'rincian',
-            'status',
+        $datakel = createKeluhan::findOrFail($id);
+        $daftek = CreateTeknisi::all(); 
+        $dafjabatan = Jabatan::all();
+        $dafkategori = Kategori::all();
+        $dafsatuankerja = SatuanKerja::all();
+        $daflantai = Lantai::all(); 
+        $user = Auth::user();
+        $showEditButton = $user && $user->level == 1;
+
+        return view('editkeluhan', compact('datakel', 'daftek', 'showEditButton', 'dafjabatan', 'dafkategori', 'dafsatuankerja', 'daflantai'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'keluhan' => 'required',
+            'nip' => 'required',
+            'nik' => 'required',
+            'nama_pelapor' => 'required',
+            'jabatan' => 'required',
+            'kategori' => 'required',
+            'teknisi' => 'required',
+            'notadinas' => 'nullable',
+            'deadline' => 'date',
+            'satuankerja' => 'required',
+            'lantai' => 'required',
+            'rincian' => 'required',
+            'status' => 'required',
         ]);
 
-        // Start a query builder
-        $query = createKeluhan::query();
+        $keluhan = createKeluhan::findOrFail($id);
+        $keluhan->update($request->all());
 
-        // Apply filters
-        if (!empty($filters['keluhan'])) {
-            $query->where('keluhan', 'like', '%' . $filters['keluhan'] . '%');
-        }
+        return redirect()->route('keluhan.berlangsung')
+                        ->with('success', 'Data keluhan berhasil diperbarui.');
+    }
 
-        if (!empty($filters['nip'])) {
-            $query->where('nip', 'like', '%' . $filters['nip'] . '%');
-        }
+    // Menampilkan keluhan yang belum selesai
+    public function indexBerlangsung()
+    {
+        createKeluhan::where('status', '!=', 3)
+            ->whereNotNull('deadline')
+            ->whereDate('deadline', '<', Carbon::today())
+            ->update(['status' => 4]);
 
-        if (!empty($filters['nik'])) {
-            $query->where('nik', 'like', '%' . $filters['nik'] . '%');
-        }
+        $dafkel = CreateKeluhan::where('status', '!=', 3)->get();
+        return view('daftarkeluhan', compact('dafkel'));
+    }
 
-        if (!empty($filters['nama_pelapor'])) {
-            $query->where('nama_pelapor', 'like', '%' . $filters['nama_pelapor'] . '%');
-        }
-
-        if (!empty($filters['jabatan'])) {
-            $query->where('jabatan', 'like', '%' . $filters['jabatan'] . '%');
-        }
-
-        if (!empty($filters['kategori'])) {
-            $query->where('kategori', 'like', '%' . $filters['kategori'] . '%');
-        }
-
-        if (!empty($filters['teknisi'])) {
-            $query->where('teknisi', 'like', '%' . $filters['teknisi'] . '%');
-        }
-
-        if (!empty($filters['santuankerja'])) {
-            $query->where('satuankerja', 'like', '%' . $filters['satuankerja'] . '%');
-        }
-
-        if (!empty($filters['created_at'])) {
-            $query->where('created_at', 'like', '%' . $filters['created_at'] . '%');
-        }
-
-        if (!empty($filters['status'])) {
-            $query->where('status', 'like', '%' . $filters['status'] . '%');
-        }
-
-        // Paginate the filtered results
-        $dafkel = $query->paginate(10);
-
-        // Pass filters back to the view for better UX
-        return view('daftarkeluhan', [
-            'dafkel' => $dafkel,
-            'filters' => $filters,
-        ]);
+    // Menampilkan keluhan yang sudah selesai
+    public function indexSelesai()
+    {
+        $dafkel = CreateKeluhan::where('status', 3)->get();
+        return view('keluhanselesai', compact('dafkel'));
     }
 
     public function destroy(int $id)
