@@ -17,6 +17,7 @@ class createKeluhan extends Model
         'kategori',
         'teknisi',
         'notadinas',
+        'deadline',
         'satuankerja',
         'lantai',
         'rincian',
