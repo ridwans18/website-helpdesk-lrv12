@@ -18,14 +18,14 @@ class TambahTeknisiController extends Controller
 
     public function create()
     {
-        $teknisis = CreateTeknisi::all(); // Ambil semua data dari database
+        $teknisis = CreateTeknisi::all(); 
         return view('beranda', compact('teknisis'));
     }
 
     public function store(Request $request)
     {
-    $action = $request->input('action'); // simpan atau hapus
-    $ids = $request->input('teknisi_id', []); // array teknisi yang dicentang
+    $action = $request->input('action'); 
+    $ids = $request->input('teknisi_id', []); 
 
     if ($action === 'simpan') {
         if ($request->filled('nama_teknisi')) {
