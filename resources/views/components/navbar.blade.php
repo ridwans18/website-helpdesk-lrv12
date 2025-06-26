@@ -16,10 +16,10 @@
             <div class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-4">
                     @foreach ($links as $link)
-                        <a href="{{ $link['href'] }}"
-                           class="rounded-md px-3 py-2 text-sm font-medium {{ $link['class'] ?? 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
-                           {{ $link['text'] }}
-                        </a>
+                        <button type="button" onclick="window.location='{{ $link['href'] }}'"
+                        class="rounded-md px-3 py-2 text-sm font-medium {{ $link['class'] ?? 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
+                        {{ $link['text'] }}
+                        </button>
                     @endforeach
                 </div>
             </div>
@@ -57,7 +57,12 @@
                 <!-- Active: "bg-gray-100 outline-hidden", Not Active: "" -->
                 <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
                 <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="block px-4 py-2 text-sm text-gray-700" role="menuitem">
+                        Sign out
+                    </button>
+                </form>
                 </div>
             </div>
             </div>
@@ -84,10 +89,12 @@
     <div x-show="isOpen" class="md:hidden" id="mobile-menu">
         <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-        <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Home</a>
-        <a href="beranda" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Beranda</a>
-        <a href="daftarkeluhan" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Daftar Keluhan</a>
-        <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Laporan</a>
+        @foreach ($links as $link)
+            <button type="button" onclick="window.location='{{ $link['href'] }}'"
+            class="block rounded-md px-3 py-2 text-base font-medium {{ $link['class'] ?? 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
+            {{ $link['text'] }}
+            </button>
+        @endforeach
         </div>
         <div class="border-t border-gray-700 pt-4 pb-3">
         <div class="flex items-center px-5">
@@ -112,14 +119,5 @@
             <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</a>
         </div>
         </div>
-    </div>
-    
-
-    <!-- Mobile menu -->
-    <div id="mobile-menu" class="lg:hidden hidden px-4 pb-4">
-        <a class="block text-gray-700 py-2" href="#">Home</a>
-        <a class="block text-blue-600 font-semibold py-2" href="index.html">Beranda</a>
-        <a class="block text-gray-700 py-2" href="daftarkeluhan.html">Daftar Keluhan</a>
-        <a class="block text-gray-700 py-2" href="#">Laporan</a>
     </div>
 </nav>
