@@ -1,3 +1,5 @@
+@props(['dafsatuankerja', 'daflantai', 'showEditButton'])
+
 <!-- Location Information -->
 <h4 class="text-lg font-semibold mb-2">
     Lokasi
@@ -9,24 +11,28 @@
         </label>
         <div class="flex flex-row items-center justify-between gap-2">
             <select 
-                type="text"
-                id="satuankerja" 
+                type="text" 
+                id="satuankerja"
                 name="satuankerja"
                 class="w-full border border-gray-300 rounded px-3 py-2"
                 required
             >
-                <option>Tata Keloka TIK</option>
-                <option>Tata Usaha</option>
-                <option>Pengembangan</option>
-                <option>Operasional</option>
+                <option></option>
+                @forelse($dafsatuankerja as $item)
+                    <option>{{ $item->nama_satuankerja }}</option>
+                @empty
+                    <option disabled>Tidak ada Satuan Kerja.</option>
+                @endforelse
             </select>
             <div class="flex gap-2">
+                @if ($showEditButton)
                 <x-heroicon-c-pencil-square 
                     type="button" 
                     data-bs-toggle="modal" 
-                    data-bs-target="#ubahLantaiModal" 
+                    data-bs-target="#ubahSatuanKerja" 
                     class="w-6"
                 />
+                @endif
             </div>
         </div>
     </div>
@@ -36,23 +42,28 @@
         </label>
         <div class="flex flex-row items-center justify-between gap-2">
             <select 
-                type="text"
-                id="lantai" 
+                type="text" 
+                id="lantai"
                 name="lantai"
                 class="w-full border border-gray-300 rounded px-3 py-2"
+                required
             >
-                <option>Lt.1</option>
-                <option>Lt.2</option>
-                <option>Lt.3</option>
-                <option>Lt.4</option>
+                <option></option>
+                @forelse($daflantai as $item)
+                    <option>{{ $item->nama_lantai }}</option>
+                @empty
+                    <option disabled>Tidak ada Lantai.</option>
+                @endforelse
             </select>
             <div class="flex gap-2">
+                @if ($showEditButton)
                 <x-heroicon-c-pencil-square 
                     type="button" 
                     data-bs-toggle="modal" 
-                    data-bs-target="#ubahLantaiModal" 
+                    data-bs-target="#ubahLantai" 
                     class="w-6"
                 />
+                @endif
             </div>
         </div>
     </div>
