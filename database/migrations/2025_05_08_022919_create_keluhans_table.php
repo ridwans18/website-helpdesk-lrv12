@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('jabatan');
             $table->string('kategori');
             $table->string('teknisi');
-            $table->string('notadinas');
+            $table->integer('notadinas');
             $table->string('satuankerja');
             $table->string('lantai');
             $table->string('rincian');
