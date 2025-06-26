@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CreateTeknisi extends Model
 {
-    protected $table = 'createteknisis'; // Nama tabel di database
+    protected $table = 'createteknisis'; 
 
     protected $fillable = [
         'nama_teknisi',
