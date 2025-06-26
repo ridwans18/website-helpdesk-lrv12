@@ -4,18 +4,27 @@
     <meta charset="utf-8">
     <title>Laporan Keluhan</title>
     <style>
+        body {
+            font-family: sans-serif;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
+            font-size: 11px;
+            table-layout: fixed;
+            word-wrap: break-word;
         }
+
         th, td {
             border: 1px solid #000;
-            padding: 6px;
+            padding: 5px;
             text-align: left;
+            vertical-align: top;
         }
+
         th {
-            background-color: #ddd;
+            background-color: #eee;
         }
     </style>
 </head>
@@ -34,9 +43,11 @@
                 <th>Jabatan</th>
                 <th>Kategori</th>
                 <th>Teknisi</th>
+                <th>Nota Dinas</th>
                 <th>Satuan Kerja</th>
                 <th>Lantai</th>
                 <th>Tanggal Lapor</th>
+                <th>Tenggat Waktu</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -51,14 +62,17 @@
                 <td>{{ $item->jabatan }}</td>
                 <td>{{ $item->kategori }}</td>
                 <td>{{ $item->teknisi }}</td>
+                <td>{{ $item->notadinas }}</td>
                 <td>{{ $item->satuankerja }}</td>
                 <td>{{ $item->lantai }}</td>
                 <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y') }}</td>
+                <td>{{ \Carbon\Carbon::parse($item->deadline)->format('d-m-Y') }}</td>
                 <td>
                     @switch($item->status)
-                        @case(1) Menunggu Konfirmasi @break
+                        @case(1) Open @break
                         @case(2) Diproses @break
-                        @case(3) Selesai @break
+                        @case(3) Close @break
+                        @case(4) Overdue @break
                         @default Tidak Diketahui
                     @endswitch
                 </td>
