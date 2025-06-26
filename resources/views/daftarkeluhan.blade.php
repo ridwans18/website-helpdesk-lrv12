@@ -13,16 +13,36 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body class="flex flex-col min-h-screen d-flex flex-column min-vh-100">
-        <div class="min-h-full">
-            <x-navbar :links="[
+        @php
+            $user = Auth::user();
+            $navbarLinks = [
                 ['href' => '/', 'text' => 'Home'],
-                ['href' => 'beranda', 'text' => 'Beranda'],
-                ['href' => route('daftarKeluhan'), 'class' => 'text-white bg-gray-900', 'text' => 'Daftar Keluhan'],
-                ['href' => 'laporan', 'text' => 'Laporan'],
-            ]" />
+                ['href' => '../beranda', 'text' => 'Beranda'],
+                ['href' => route('keluhan.berlangsung'), 'class' => 'text-white bg-gray-900', 'text' => 'Daftar Keluhan'],
+                ['href' => '../laporan', 'text' => 'Laporan'],
+            ];
+
+            if ($user && $user->level == 1) {
+                $navbarLinks[] = ['href' => '../register', 'text' => 'Kelola User'];
+            }
+        @endphp
+
+        <div class="min-h-full">
+            <x-navbar :links="$navbarLinks" />
         </div>
+        
         <!-- Start Content -->
         <main class="flex-grow container mx-auto px-4 py-6">
+            {{-- @if (session('success'))
+                <div class="mb-4 p-3 bg-green-100 text-green-700 rounded">
+                    {{ session('success') }}
+                </div>
+            @endif --}}
+            
+            <div class="mb-4 flex space-x-2">
+                <a href="{{ route('keluhan.berlangsung') }}" class="px-4 py-2 bg-blue-500 btn btn-outline-primary active">Open</a>
+                <a href="{{ route('keluhan.selesai') }}" class="px-4 py-2 btn btn-outline-primary">Close</a>
+            </div>
             <div class="overflow-x-auto">
                 {{-- Notif Berhsisil --}}
                 <div 
@@ -35,43 +55,42 @@
                     Gagal mengubah status.
                 </div>
                 {{-- Tabel Daftar Keluhan --}}
-                <table class="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200 bg-white rounded-lg">
                     <thead class="bg-gray-200 text-gray-700 text-sm uppercase tracking-wider">
                         <tr>
-                            <th class="px-4 py-3">No</th>
-                            <th class="px-4 py-3">NIP</th>
-                            <th class="px-4 py-3">NIK</th>
-                            <th class="px-4 py-3">Nama Pelapor</th>
-                            <th class="px-4 py-3">Keluhan</th>
-                            <th class="px-4 py-3">Jabatan</th>
-                            <th class="px-4 py-3">Kategori</th>
-                            <th class="px-4 py-3">Teknisi</th>
-                            <th class="px-4 py-3">Satuan Kerja</th>
-                            <th class="px-4 py-3">Lantai</th>
-                            <th class="px-4 py-3">Status</th>
-                            <th class="px-4 py-3">Tanggal Lapor</th>
-                            <th class="px-4 py-3">Aksi</th>
+                            <th class="px-3 py-2 border">No</th>
+                            <th class="px-3 py-2 border">Nama Pelapor</th>
+                            <th class="px-3 py-2 border">Keluhan</th>
+                            <th class="px-3 py-2 border">Kategori</th>
+                            <th class="px-3 py-2 border">Teknisi</th>
+                            <th class="px-3 py-2 border">Status</th>
+                            <th class="px-3 py-2 border">Tanggal Lapor</th>
+                            <th class="px-3 py-2 border">Tenggat Waktu</th>
+                            <th class="px-3 py-2 border">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="" class="text-sm divide-y divide-gray-100">
                         @foreach($dafkel as $item)
-                        <tr onclick="showDetails('Maria')" class="hover:bg-gray-100 cursor-pointer">
-                            <td class="px-4 py-2 text-center">{{ $loop->iteration }}</td>
-                            <td class="px-4 py-2">{{ $item->nip }}</td>
-                            <td class="px-4 py-2">{{ $item->nik }}</td>
-                            <td class="px-4 py-2">{{ $item->nama_pelapor }}</td>
-                            <td class="px-4 py-2">{{ $item->keluhan }}</td>
-                            <td class="px-4 py-2">{{ $item->jabatan }}</td>
-                            <td class="px-4 py-2">{{ $item->kategori }}</td>
-                            <td class="px-4 py-2">{{ $item->teknisi }}</td>
-                            <td class="px-4 py-2">{{ $item->satuankerja }}</td>
-                            <td class="px-4 py-2">{{ $item->lantai }}</td>
+                            <tr class="hover:bg-gray-100 cursor-pointer" onclick="showDetailModal({{ json_encode([
+                                'nip' => $item->nip,
+                                'nik' => $item->nik,
+                                'jabatan' => $item->jabatan,
+                                'notadinas' => $item->notadinas,
+                                'satuankerja' => $item->satuankerja,
+                                'lantai' => $item->lantai,
+                                'rincian' => $item->rincian,
+                            ]) }})">
+                            <td class="px-3 border text-center items-center">{{ $loop->iteration }}</td>
+                            <td class="px-3 border">{{ $item->nama_pelapor }}</td>
+                            <td class="px-3 border">{{ $item->keluhan }}</td>
+                            <td class="px-3 border">{{ $item->kategori }}</td>
+                            <td class="px-3 border">{{ $item->teknisi }}</td>
                             {{-- Badge Status --}}
-                            <td class="px-4 py-2">
+                            <td class="px-3 border">
                                 @switch($item->status)
                                     @case(1)
                                         <a class="inline-flex bg-gray-500 text-white font-semibold py-1 px-3 rounded text-xs">
-                                            Menunggu Konfirmasi
+                                            Open
                                         </a>
                                         @break
                                     @case(2)
@@ -81,100 +100,164 @@
                                         @break
                                     @case(3)
                                         <a class="inline-flex bg-green-500 text-white font-semibold py-1 px-3 rounded text-xs">
-                                            Selesai
+                                            Close
+                                        </a>
+                                        @break
+                                    @case(4)
+                                        <a class="inline-flex bg-red-700 text-white font-semibold py-1 px-3 rounded text-xs">
+                                            Overdue
                                         </a>
                                         @break
                                     @default
-                                        <a class="inline-flex bg-red-500 text-white font-semibold py-1 px-3 rounded text-xs">
+                                        <a class="inline-flex bg-red-700 text-white font-semibold py-1 px-3 rounded text-xs">
                                             Status Tidak Dikenal
                                         </a>
                                 @endswitch
                             </td>
-                            <td class="px-4 py-2">{{ $item->created_at }}</td>
-                            {{-- Button Aksi --}}
-                            <td class="px-6 py-2">
-                                <div class="relative inline-block text-left">
-                                    <button onclick="toggleDropdown(event)" class="mb-1 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-1 px-3 rounded text-xs">
-                                        Ubah Status
-                                    </button>
 
-                                    <div class="hidden origin-top-right absolute right-0 w-35 rounded-md shadow-lg bg-white z-10" id="dropdown-status">
-                                        <div class="py-1 text-sm text-gray-700">
-                                            <a onclick="changeStatus({{ $item->id }}, 1)" class="block px-4 py-2 hover:bg-gray-200">Menunggu Konfirmasi</a>
-                                            <a onclick="changeStatus({{ $item->id }}, 2)" class="block px-4 py-2 hover:bg-yellow-200">Diproses</a>
-                                            <a onclick="changeStatus({{ $item->id }}, 3)" class="block px-4 py-2 hover:bg-green-200">Selesai</a>
+                            <td class="px-3 border">
+                                {{ $item->created_at ? \Carbon\Carbon::parse($item->created_at)->format('d-m-Y') : '-' }}
+                            </td>
+                            <td class="px-3 border">
+                                {{ $item->deadline ? \Carbon\Carbon::parse($item->deadline)->format('d-m-Y') : '-' }}
+                            </td>
+
+                            {{-- Button Aksi --}}
+                            <td class="px-3 border p-2">
+                                <div class="flex items-center gap-1">
+                                    <!-- Kolom kiri: Status & Edit -->
+                                    <div class="flex flex-col gap-1">
+                                        <!-- Tombol Status -->
+                                        <div class="relative inline-block text-left">
+                                            <button 
+                                                id="status-button-{{ $item->id }}"
+                                                onclick="event.stopPropagation(); toggleDropdown({{ $item->id }})"
+                                                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-1 px-2 rounded text-xs">
+                                                Status
+                                            </button>
+                                            <div 
+                                                id="dropdown-status-{{ $item->id }}"
+                                                class="hidden origin-top-right absolute right-0 w-35 rounded-md shadow-lg bg-white z-10">
+                                                <div class="py-1 text-sm text-gray-700">
+                                                    {{-- <a onclick="event.stopPropagation(); changeStatus({{ $item->id }}, 1)" class="block px-3 py-2 hover:bg-gray-200">Open</a> --}}
+                                                    <a onclick="event.stopPropagation(); changeStatus({{ $item->id }}, 2)" class="block px-3 py-2 hover:bg-yellow-200">Diproses</a>
+                                                    <a onclick="event.stopPropagation(); changeStatus({{ $item->id }}, 3)" class="block px-3 py-2 hover:bg-green-200">Close</a>
+                                                </div>
+                                            </div>
                                         </div>
+
+                                        <a 
+                                            href="{{ route('daftarkeluhan.edit', $item->id) }}" 
+                                            onclick="event.stopPropagation();"
+                                            class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-2 text-center rounded text-xs">
+                                            Edit
+                                        </a>
                                     </div>
+
+                                    <!-- Tombol Hapus -->
+                                    <form 
+                                        action="{{ route('daftarKeluhan.destroy', $item->id) }}" 
+                                        method="POST" 
+                                        onsubmit="event.stopPropagation(); return confirm('Yakin ingin menghapus?')"
+                                        class="flex items-center h-full">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-2 rounded text-xs">
+                                            Hapus
+                                        </button>
+                                    </form>
                                 </div>
-                                <a type="submit" href="{{ route('daftarkeluhan.edit', $item->id) }}" class="mb-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-3 rounded text-xs">
-                                    Ubah Data
-                                </a>
-                                <form action="{{ route('daftarKeluhan.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?')" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                     <button type="submit" class="mb-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded text-xs">
-                                        Hapus
-                                    </button>
-                                </form>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
-            </main>
+                <!-- Wrapper Modal -->
+                <div id="detailModal" class="fixed inset-0 z-50 items-center justify-center hidden p-4">
+                    <!-- Background Gelap -->
+                    <div class="fixed inset-0 bg-black opacity-30" onclick="closeModal()"></div>
+
+                    <!-- Kotak Modal -->
+                        <div 
+                            class="relative bg-white rounded-lg shadow-lg 
+                                w-auto max-w-[70vh] mx-auto 
+                                max-h-[70vh] overflow-y-auto 
+                                ooverflow-y-auto p-4 z-10"
+                            onclick="event.stopPropagation();"
+                        >
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold mb-3">Detail Informasi</h3>
+                            <button onclick="closeModal()" class="text-gray-500 hover:text-black text-xl font-bold mb-4">
+                                &times;
+                            </button>
+                        </div>
+
+                        <div class="text-sm grid grid-cols-[auto,1fr] gap-x-2 gap-y-2">
+                            <strong>NIP:</strong> <span id="modal-nip" class="whitespace-pre-line block"></span>
+                            <strong>NIK:</strong> <span id="modal-nik" class="whitespace-pre-line block"></span>
+                            <strong>Jabatan:</strong> <span id="modal-jabatan" class="whitespace-pre-line block"></span>
+                            <strong>Nota Dinas:</strong> <span id="modal-notadinas" class="whitespace-pre-line block"></span>
+                            <strong>Satuan Kerja:</strong> <span id="modal-satuankerja" class="whitespace-pre-line block"></span>
+                            <strong>Lantai:</strong> <span id="modal-lantai" class="whitespace-pre-line block"></span>
+                            <strong>Rincian:</strong> <span id="modal-rincian" class="whitespace-pre-line block"></span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
         
-        <!-- Footer -->
-        <footer class="bg-gray-800 text-white mt-auto">
-            <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <p class="text-sm text-gray-400 mb-0 mt-2">&copy; 2025 Sistem Keluhan. All rights reserved.</p>
-                    <div class="flex space-x-4 mt-2">
-                    <a href="#" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
-                    <a href="#" class="text-gray-400 hover:text-white text-sm">Terms of Service</a>
-                    <a href="#" class="text-gray-400 hover:text-white text-sm">Contact</a>
-                </div>
-            </div>
-        </footer>
+        <x-footer />
     </body>
     
     <script>
-        function showDetails(customerID) {
-            let details;
-            switch (customerID) {
-            case 'Maria':
-                details = 'Detail untuk Maria: Network Issue, Teknisi Akbar Wahyu, Tenggat Waktu 15 Juni, 2025';
-                break;
-            case 'Anar':
-                details = 'Detail untuk ANAR: Login Issue, Teknisi Wahyu Mekar, Tenggat Waktu 30 Juni, 2025';
-                break;
-            default:
-                details = 'Detail belum tersedia.';
-            }
-            document.getElementById('detailText').innerText = details;
-            document.getElementById('detailModal').classList.remove('hidden');
+        function showDetailModal(data) {
+            document.getElementById('modal-nip').textContent = data.nip || '-';
+            document.getElementById('modal-nik').textContent = data.nik || '-';
+            document.getElementById('modal-jabatan').textContent = data.jabatan || '-';
+            document.getElementById('modal-notadinas').textContent = data.notadinas || '-';
+            document.getElementById('modal-satuankerja').textContent = data.satuankerja || '-';
+            document.getElementById('modal-lantai').textContent = data.lantai || '-';
+            document.getElementById('modal-rincian').textContent = data.rincian || '-';
+            const modal = document.getElementById('detailModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
-    
-        function closeDetails() {
-            document.getElementById('detailModal').classList.add('hidden');
+
+        function closeModal() {
+            const modal = document.getElementById('detailModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
     </script>
     
     {{-- Dropdown Button Ubah Status --}}
     <script>
-        function toggleDropdown(event) {
-            event.stopPropagation();
-            const dropdown = event.currentTarget.nextElementSibling;
-
-            // Tutup semua dropdown lain
-            document.querySelectorAll('.dropdown-menu').forEach(el => {
-                if (el !== dropdown) el.classList.add('hidden');
+        function toggleDropdown(id) {
+            // Tutup semua dropdown lain terlebih dahulu
+            const allDropdowns = document.querySelectorAll('[id^="dropdown-status-"]');
+            allDropdowns.forEach(dropdown => {
+                if (dropdown.id !== 'dropdown-status-' + id) {
+                    dropdown.classList.add('hidden');
+                }
             });
 
-            // Toggle dropdown saat ini
+            // Toggle dropdown yang diklik
+            const dropdown = document.getElementById('dropdown-status-' + id);
             dropdown.classList.toggle('hidden');
         }
+
+        document.addEventListener('click', function(event) {
+            const allDropdowns = document.querySelectorAll('[id^="dropdown-status-"]');
+
+            allDropdowns.forEach(dropdown => {
+                const btnId = 'status-button-' + dropdown.id.split('-').pop();
+                const button = document.getElementById(btnId);
+
+                if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            });
+        });
 
         function changeStatus(id, status) {
             fetch(`/ubah-status/${id}`, {
@@ -192,28 +275,18 @@
                 return response.json();
             })
             .then(data => {
-                showSuccessNotification(); // ✅ tampilkan notif sukses
+                showSuccessNotification(); // tampilkan notif sukses
 
                 setTimeout(() => {
-                    location.reload(); // 🔄 refresh setelah 2 detik
-                }, 2000);
+                    location.reload(); // refresh setelah 2 detik
+                }, 150);
             })
             .catch(error => {
-                showErrorNotification(); // ❌ tampilkan notif error
+                showErrorNotification(); // tampilkan notif error
                 console.error('Error:', error);
             });
         }
-
-        // Tutup dropdown jika klik di luar area dropdown
-        window.addEventListener('click', function (e) {
-            document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                if (!menu.contains(e.target)) {
-                    menu.classList.add('hidden');
-                }
-            });
-        });
     </script>
-
     
     {{-- Fungsi menampilkan notif --}}
     <script>
